@@ -183,7 +183,25 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
             document.querySelector('.cart').style.display = 'none';
             document.querySelector('#product-details').style.display = 'none';
             document.querySelector('.thank-you').style.display = 'block';
+           / / Push the purchase event to the dataLayer
+        window.dataLayer.push({
+            event: 'purchase', // GA4 event name
+            ecommerce: {
+                transaction_id: transactionId,
+                affiliation: 'Online Store', // Replace with your store name
+                value: parseFloat(value),
+                currency: currency,
+                tax: 0, // Replace with calculated tax if available
+                shipping: 0, // Replace with shipping cost if applicable
+                items: items
+            }
+        });
 
+        console.log('Purchase event pushed to the dataLayer:', {
+            transaction_id: transactionId,
+            value: value,
+            items: items
+        });
             cart.length = 0; // Clear the cart
             updateCart();
         }
