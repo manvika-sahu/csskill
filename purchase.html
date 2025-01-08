@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simple E-commerce</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        .product {
+            border: 1px solid #ccc;
+            padding: 10px;
+            margin: 10px;
+            display: inline-block;
+            text-align: center;
+            width: 200px;
+        }
+        .product img {
+            width: 100%;
+            height: auto;
+        }
+        .cart {
+            margin-top: 20px;
+            border-top: 2px solid #000;
+            padding-top: 10px;
+        }
+        #product-details {
+            display: none;
+            margin-top: 20px;
+        }
+        button {
+            margin-top: 10px;
+            padding: 5px 10px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        .thank-you {
+            display: none;
+            margin-top: 20px;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <h1>Product Listing Page (PLP)</h1>
+    <div id="products">
+        <div class="product" onclick="viewProduct(1, 'Product A', 'High-quality product A with excellent features.', 10.99, 'https://images.pexels.com/photos/27305370/pexels-photo-27305370/free-photo-of-prada-sunglasses-and-a-book-with-the-words-prada-on-it.jpeg?auto=compress&cs=tinysrgb&w=600')">
+            <img src="https://images.pexels.com/photos/27305370/pexels-photo-27305370/free-photo-of-prada-sunglasses-and-a-book-with-the-words-prada-on-it.jpeg?auto=compress&cs=tinysrgb&w=600" alt="Product A">
+            <h2>Product A</h2>
+            <p>Price: $10.99</p>
+        </div>
+        <div class="product" onclick="viewProduct(2, 'Product B', 'Reliable product B, perfect for your needs.', 20.99, 'https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcRgEoZaO0rbgdSk6ccElVSuReKqFv4jhDMp95qwIQspfdkEkHgzbvZKZyHYKUNAzLj9bl__OEndFV13aNCCnFm4Mqmd687I6fPZVIMItYWgV3toNFfbLMdrjA&usqp=CAE')">
+            <img src="https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcRgEoZaO0rbgdSk6ccElVSuReKqFv4jhDMp95qwIQspfdkEkHgzbvZKZyHYKUNAzLj9bl__OEndFV13aNCCnFm4Mqmd687I6fPZVIMItYWgV3toNFfbLMdrjA&usqp=CAE" alt="Product B">
+            <h2>Product B</h2>
+            <p>Price: $20.99</p>
+        </div>
+        <div class="product" onclick="viewProduct(3, 'Product C', 'Premium product C, offering the best value.', 30.99, 'https://images.pexels.com/photos/2720447/pexels-photo-2720447.jpeg?auto=compress&cs=tinysrgb&w=600')">
+            <img src="https://images.pexels.com/photos/2720447/pexels-photo-2720447.jpeg?auto=compress&cs=tinysrgb&w=600" alt="Product C">
+            <h2>Product C</h2>
+            <p>Price: $30.99</p>
+        </div>
+        <div class="product" onclick="viewProduct(4, 'Product D', 'Stylish product D for modern living.', 40.99, 'https://images.pexels.com/photos/8365693/pexels-photo-8365693.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2')">
+            <img src="https://images.pexels.com/photos/8365693/pexels-photo-8365693.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2" alt="Product D">
+            <h2>Product D</h2>
+            <p>Price: $40.99</p>
+        </div>
+        <div class="product" onclick="viewProduct(5, 'Product E', 'Durable product E with versatile applications.', 50.99, 'https://images.pexels.com/photos/9957554/pexels-photo-9957554.jpeg?auto=compress&cs=tinysrgb&w=600')">
+            <img src="https://images.pexels.com/photos/9957554/pexels-photo-9957554.jpeg?auto=compress&cs=tinysrgb&w=600" alt="Product E">
+            <h2>Product E</h2>
+            <p>Price: $50.99</p>
+        </div>
+    </div>
+
+    <div id="product-details">
+        <h2 id="details-name"></h2>
+        <img id="details-image" src="" alt="Product Details" style="width: 200px; height: auto;">
+        <p id="details-description"></p>
+        <p><strong>Price:</strong> $<span id="details-price"></span></p>
+        <button id="add-to-cart" onclick="addToCartFromDetails()">Add to Cart</button>
+        <button onclick="backToProducts()">Back to Products</button>
+    </div>
+
+    <div class="cart">
+        <h2>Cart</h2>
+        <ul id="cart-items"></ul>
+        <p><strong>Total:</strong> $<span id="total-price">0.00</span></p>
+        <button onclick="purchase()">Purchase</button>
+    </div>
+
+    <div class="thank-you">
+        <h2>Thank you for your purchase!</h2>
+        <p>We appreciate your business.</p>
+    </div>
+
+    <script>
+        const cart = [];
+        let currentProduct = {};
+
+        function viewProduct(id, name, description, price, image) {
+            currentProduct = { id, name, price };
+
+            document.getElementById('products').style.display = 'none';
+            document.getElementById('product-details').style.display = 'block';
+            document.getElementById('details-name').textContent = name;
+            document.getElementById('details-description').textContent = description;
+            document.getElementById('details-price').textContent = price.toFixed(2);
+            document.getElementById('details-image').src = image;
+        }
+
+        function backToProducts() {
+            document.getElementById('products').style.display = 'block';
+            document.getElementById('product-details').style.display = 'none';
+        }
+
+        function addToCartFromDetails() {
+            cart.push(currentProduct);
+            updateCart();
+        }
+
+        function updateCart() {
+            const cartItems = document.getElementById('cart-items');
+            const totalPrice = document.getElementById('total-price');
+            cartItems.innerHTML = '';
+
+            let total = 0;
+            cart.forEach(item => {
+                const li = document.createElement('li');
+                li.textContent = `${item.name} - $${item.price.toFixed(2)}`;
+                cartItems.appendChild(li);
+                total += item.price;
+            });
+
+            totalPrice.textContent = total.toFixed(2);
+        }
+
+        function purchase() {
+            if (cart.length === 0) {
+                alert('Your cart is empty!');
+                return;
+            }
+
+            document.querySelector('.cart').style.display = 'none';
+            document.querySelector('#product-details').style.display = 'none';
+            document.querySelector('.thank-you').style.display = 'block';
+
+            cart.length = 0; // Clear the cart
+            updateCart();
+        }
+    </script>
+</body>
+</html>
