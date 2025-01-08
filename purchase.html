@@ -138,6 +138,24 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         function addToCartFromDetails() {
             cart.push(currentProduct);
             updateCart();
+                // Push the Add-to-Cart event to the dataLayer
+         window.dataLayer.push({
+        event: 'add_to_cart', // GA4 event name
+        ecommerce: {
+            currency: 'USD', // Replace with your site's currency
+            value: currentProduct.price, // Total value of the added product
+            items: [
+                {
+                    item_id: currentProduct.id, // Product ID
+                    item_name: currentProduct.name, // Product Name
+                    price: currentProduct.price, // Product Price
+                    quantity: 1 // Quantity added to cart
+                }
+            ]
+        }
+    });
+
+    console.log('Add-to-Cart event pushed to the dataLayer:', currentProduct); // Debugging
         }
 
         function updateCart() {
