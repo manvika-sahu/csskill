@@ -210,6 +210,22 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     console.log('Add-to-Cart event pushed to the dataLayer:', currentProduct); // Debugging
 }
 
+            // Push remove_from_cart event
+            window.dataLayer.push({
+                event: 'remove_from_cart',
+                ecommerce: {
+                    items: [
+                        {
+                            item_id: removedItem.id,
+                            item_name: removedItem.name,
+                            price: removedItem.price,
+                            quantity: 1
+                        }
+                    ]
+                }
+            });
+        }
+
 
         function updateCart() {
             const cartItems = document.getElementById('cart-items');
