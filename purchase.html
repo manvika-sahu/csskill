@@ -183,6 +183,22 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
             document.querySelector('.cart').style.display = 'none';
             document.querySelector('#product-details').style.display = 'none';
             document.querySelector('.thank-you').style.display = 'block';
+           window.dataLayer.push({
+    event: 'purchase', // GA4 event name
+    ecommerce: {
+        transaction_id: `TXN-${Date.now()}`, // Generate a unique transaction ID
+        value: cart.reduce((total, item) => total + item.price, 0).toFixed(2),
+        currency: 'USD', // Replace with your currency
+        items: cart.map(item => ({
+            item_id: item.id,
+            item_name: item.name,
+            price: item.price,
+            quantity: 1
+        }))
+    }
+});
+
+console.log('Purchase event pushed to the dataLayer:', cart);
 
             cart.length = 0; // Clear the cart
             updateCart();
