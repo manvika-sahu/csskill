@@ -258,7 +258,10 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
         function refund() {
             
-
+       if (cart.length === 0) {
+                alert('No items to refund!');
+                return;
+            }
             // Push refund event
           window.dataLayer.push({
     event: 'refund',
