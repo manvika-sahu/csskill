@@ -105,51 +105,58 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         const cart = [];
         let currentProduct = {};
 
-        function selectItem(id, name, price) {
-            currentProduct = { id, name, price };
+      
 
-            // Push select_item event
-            window.dataLayer.push({
-                event: 'select_item',
-                ecommerce: {
-                    items: [
-                        {
-                            item_id: id,
-                            item_name: name,
-                            price: price,
-                        }
-                    ]
+      function selectItem(id, name, price) {
+    const image = id === 1
+        ? "https://images.pexels.com/photos/27305370/pexels-photo-27305370/free-photo-of-prada-sunglasses-and-a-book-with-the-words-prada-on-it.jpeg?auto=compress&cs=tinysrgb&w=600"
+        : "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcRgEoZaO0rbgdSk6ccElVSuReKqFv4jhDMp95qwIQspfdkEkHgzbvZKZyHYKUNAzLj9bl__OEndFV13aNCCnFm4Mqmd687I6fPZVIMItYWgV3toNFfbLMdrjA&usqp=CAE";
+
+    currentProduct = { id, name, price, image };
+
+    // Push select_item event
+    window.dataLayer.push({
+        event: 'select_item',
+        ecommerce: {
+            items: [
+                {
+                    item_id: id,
+                    item_name: name,
+                    price: price,
                 }
-            });
-
-            // Redirect to view product details
-            viewProduct(id, name, `Details of ${name}`, price, '');
+            ]
         }
+    });
 
+    // Redirect to view product details
+    viewProduct(id, name, `Details of ${name}`, price, image);
+}
         function viewProduct(id, name, description, price, image) {
-            currentProduct = { id, name, price };
+    currentProduct = { id, name, price, image };
 
-            document.getElementById('products').style.display = 'none';
-            document.getElementById('product-details').style.display = 'block';
-            document.getElementById('details-name').textContent = name;
-            document.getElementById('details-description').textContent = description;
-            document.getElementById('details-price').textContent = price.toFixed(2);
-            document.getElementById('details-image').src = image;
+    document.getElementById('products').style.display = 'none';
+    document.getElementById('product-details').style.display = 'block';
+    document.getElementById('details-name').textContent = name;
+    document.getElementById('details-description').textContent = description;
+    document.getElementById('details-price').textContent = price.toFixed(2);
+    document.getElementById('details-image').src = image;
 
-            // Push view_item event
-            window.dataLayer.push({
-                event: 'view_item',
-                ecommerce: {
-                    items: [
-                        {
-                            item_id: id,
-                            item_name: name,
-                            price: price,
-                        }
-                    ]
+    // Push view_item event
+    window.dataLayer.push({
+        event: 'view_item',
+        ecommerce: {
+            items: [
+                {
+                    item_id: id,
+                    item_name: name,
+                    price: price,
                 }
-            });
+            ]
         }
+    });
+}
+
+
 
         function backToProducts() {
             document.getElementById('products').style.display = 'block';
