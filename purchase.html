@@ -105,8 +105,6 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         const cart = [];
         let currentProduct = {};
 
-      
-
       function selectItem(id, name, price) {
     const image = id === 1
         ? "https://images.pexels.com/photos/27305370/pexels-photo-27305370/free-photo-of-prada-sunglasses-and-a-book-with-the-words-prada-on-it.jpeg?auto=compress&cs=tinysrgb&w=600"
@@ -118,35 +116,22 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     window.dataLayer.push({
         event: 'select_item',
         ecommerce: {
-            item_list_id: "related_products",
-    item_list_name: "Related products",
-    items: [
-    {
-      item_id: "SKU_12345",
-      item_name: "Stan and Friends Tee",
-      affiliation: "Google Merchandise Store",
-      coupon: "SUMMER_FUN",
-      discount: 2.22,
-      index: 0,
-      item_brand: "Google",
-      item_category: "Apparel",
-      item_category2: "Adult",
-      item_category3: "Shirts",
-      item_category4: "Crew",
-      item_category5: "Short sleeve",
-      item_list_id: "related_products",
-      item_list_name: "Related Products",
-      item_variant: "green",
-      location_id: "ChIJIQBpAG2ahYAR_6128GcTUEo",
-      price: 10.01,
-      quantity: 3
-    
+            items: [
+                {
+                    item_id: id,
+                    item_name: name,
+                    price: price,
+                }
+            ]
         }
     });
 
     // Redirect to view product details
     viewProduct(id, name, `Details of ${name}`, price, image);
 }
+
+
+     
         function viewProduct(id, name, description, price, image) {
     currentProduct = { id, name, price, image };
 
