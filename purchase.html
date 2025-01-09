@@ -1,9 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<script>
-window.dataLayer = window.dataLayer || [];
-</script>
+
 <!-- Google Tag Manager -->
 <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
 new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
@@ -64,34 +62,20 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-TBDBXW9N"
 height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <!-- End Google Tag Manager (noscript) -->
+
     <h1>Product Listing Page (PLP)</h1>
-<div id="products">
-    <div class="product" onclick="selectProduct(1, 'Product A', 10.99)">
-        <img src="https://images.pexels.com/photos/27305370/pexels-photo-27305370/free-photo-of-prada-sunglasses-and-a-book-with-the-words-prada-on-it.jpeg?auto=compress&cs=tinysrgb&w=600" alt="Product A">
-        <h2>Product A</h2>
-        <p>Price: $10.99</p>
+    <div id="products">
+        <div class="product" onclick="selectItem(1, 'Product A', 10.99)">
+            <img src="https://images.pexels.com/photos/27305370/pexels-photo-27305370/free-photo-of-prada-sunglasses-and-a-book-with-the-words-prada-on-it.jpeg?auto=compress&cs=tinysrgb&w=600" alt="Product A">
+            <h2>Product A</h2>
+            <p>Price: $10.99</p>
+        </div>
+        <div class="product" onclick="selectItem(2, 'Product B', 20.99)">
+            <img src="https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcRgEoZaO0rbgdSk6ccElVSuReKqFv4jhDMp95qwIQspfdkEkHgzbvZKZyHYKUNAzLj9bl__OEndFV13aNCCnFm4Mqmd687I6fPZVIMItYWgV3toNFfbLMdrjA&usqp=CAE" alt="Product B">
+            <h2>Product B</h2>
+            <p>Price: $20.99</p>
+        </div>
     </div>
-    <div class="product" onclick="selectProduct(2, 'Product B', 20.99)">
-        <img src="https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcRgEoZaO0rbgdSk6ccElVSuReKqFv4jhDMp95qwIQspfdkEkHgzbvZKZyHYKUNAzLj9bl__OEndFV13aNCCnFm4Mqmd687I6fPZVIMItYWgV3toNFfbLMdrjA&usqp=CAE" alt="Product B">
-        <h2>Product B</h2>
-        <p>Price: $20.99</p>
-    </div>
-    <div class="product" onclick="selectProduct(3, 'Product C', 30.99)">
-        <img src="https://images.pexels.com/photos/2720447/pexels-photo-2720447.jpeg?auto=compress&cs=tinysrgb&w=600" alt="Product C">
-        <h2>Product C</h2>
-        <p>Price: $30.99</p>
-    </div>
-    <div class="product" onclick="selectProduct(4, 'Product D', 40.99)">
-        <img src="https://images.pexels.com/photos/8365693/pexels-photo-8365693.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2" alt="Product D">
-        <h2>Product D</h2>
-        <p>Price: $40.99</p>
-    </div>
-    <div class="product" onclick="selectProduct(5, 'Product E', 50.99)">
-        <img src="https://images.pexels.com/photos/9957554/pexels-photo-9957554.jpeg?auto=compress&cs=tinysrgb&w=600" alt="Product E">
-        <h2>Product E</h2>
-        <p>Price: $50.99</p>
-    </div>
-</div>
 
     <div id="product-details">
         <h2 id="details-name"></h2>
@@ -107,6 +91,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         <ul id="cart-items"></ul>
         <p><strong>Total:</strong> $<span id="total-price">0.00</span></p>
         <button onclick="purchase()">Purchase</button>
+        <button onclick="refund()">Refund</button>
     </div>
 
     <div class="thank-you">
@@ -118,97 +103,100 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         const cart = [];
         let currentProduct = {};
 
+        function selectItem(id, name, price) {
+            currentProduct = { id, name, price };
+
+            // Push select_item event
+            window.dataLayer.push({
+                event: 'select_item',
+                ecommerce: {
+                    items: [
+                        {
+                            item_id: id,
+                            item_name: name,
+                            price: price,
+                        }
+                    ]
+                }
+            });
+
+            // Redirect to view product details
+            viewProduct(id, name, `Details of ${name}`, price, '');
+        }
+
         function viewProduct(id, name, description, price, image) {
-    currentProduct = { id, name, price };
+            currentProduct = { id, name, price };
 
-    // Change the URL when the product is viewed (add product_id to the URL)
-    history.pushState(null, null, `?product_id=${id}`);
+            document.getElementById('products').style.display = 'none';
+            document.getElementById('product-details').style.display = 'block';
+            document.getElementById('details-name').textContent = name;
+            document.getElementById('details-description').textContent = description;
+            document.getElementById('details-price').textContent = price.toFixed(2);
+            document.getElementById('details-image').src = image;
 
-    document.getElementById('products').style.display = 'none';
-    document.getElementById('product-details').style.display = 'block';
-    document.getElementById('details-name').textContent = name;
-    document.getElementById('details-description').textContent = description;
-    document.getElementById('details-price').textContent = price.toFixed(2);
-    document.getElementById('details-image').src = image;
-
-    // Push view_item event to dataLayer
-    window.dataLayer.push({
-        event: 'view_item',
-        ecommerce: {
-            currency: 'USD',
-            value: price,
-            items: [
-                {
-                    item_id: id,
-                    item_name: name,
-                    price: price,
-                    quantity: 1
+            // Push view_item event
+            window.dataLayer.push({
+                event: 'view_item',
+                ecommerce: {
+                    items: [
+                        {
+                            item_id: id,
+                            item_name: name,
+                            price: price,
+                        }
+                    ]
                 }
-            ]
+            });
         }
-    });
 
-    console.log('View Item event pushed to dataLayer:', { id, name, price }); // Debugging
-}
-
- function selectProduct(id, name, price) {
-    console.log(`Product selected: ${name}`); // Debugging line to see if the function is triggered
-
-    currentProduct = { id, name, price };
-
-    // Change the URL when the product is selected (add product_id and action=select to the URL)
-    history.pushState(null, null, `?product_id=${id}&action=select`);
-
-    // Push select_item event to dataLayer
-    window.dataLayer.push({
-        event: 'select_item',
-        ecommerce: {
-            items: [
-                {
-                    item_id: id,
-                    item_name: name,
-                    price: price,
-                    quantity: 1
-                }
-            ]
-        }
-    });
-
-    console.log('Select Item event pushed to dataLayer:', { id, name, price }); // Debugging
-}
-
-   
         function backToProducts() {
             document.getElementById('products').style.display = 'block';
             document.getElementById('product-details').style.display = 'none';
         }
 
-       function addToCartFromDetails() {
-    cart.push(currentProduct);
-    updateCart();
+        function addToCartFromDetails() {
+            cart.push(currentProduct);
+            updateCart();
 
-    // Change the URL when the product is added to the cart (add action=select to the URL)
-    history.pushState(null, null, `?product_id=${currentProduct.id}&action=select`);
-
-    // Push the Add-to-Cart event to the dataLayer
-    window.dataLayer.push({
-        event: 'add_to_cart', // GA4 event name
-        ecommerce: {
-            currency: 'USD', // Replace with your site's currency
-            value: currentProduct.price, // Total value of the added product
-            items: [
-                {
-                    item_id: currentProduct.id, // Product ID
-                    item_name: currentProduct.name, // Product Name
-                    price: currentProduct.price, // Product Price
-                    quantity: 1 // Quantity added to cart
+            // Push add_to_cart event
+            window.dataLayer.push({
+                event: 'add_to_cart',
+                ecommerce: {
+                    items: [
+                        {
+                            item_id: currentProduct.id,
+                            item_name: currentProduct.name,
+                            price: currentProduct.price,
+                            quantity: 1
+                        }
+                    ]
                 }
-            ]
+            });
         }
-    });
 
-    console.log('Add-to-Cart event pushed to the dataLayer:', currentProduct); // Debugging
-}
+        function updateCart() {
+            const cartItems = document.getElementById('cart-items');
+            const totalPrice = document.getElementById('total-price');
+            cartItems.innerHTML = '';
+
+            let total = 0;
+            cart.forEach((item, index) => {
+                const li = document.createElement('li');
+                li.textContent = `${item.name} - $${item.price.toFixed(2)}`;
+                const removeButton = document.createElement('button');
+                removeButton.textContent = 'Remove';
+                removeButton.onclick = () => removeFromCart(index);
+                li.appendChild(removeButton);
+                cartItems.appendChild(li);
+                total += item.price;
+            });
+
+            totalPrice.textContent = total.toFixed(2);
+        }
+
+        function removeFromCart(index) {
+            const removedItem = cart.splice(index, 1)[0];
+            updateCart();
 
             // Push remove_from_cart event
             window.dataLayer.push({
@@ -226,23 +214,6 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
             });
         }
 
-
-        function updateCart() {
-            const cartItems = document.getElementById('cart-items');
-            const totalPrice = document.getElementById('total-price');
-            cartItems.innerHTML = '';
-
-            let total = 0;
-            cart.forEach(item => {
-                const li = document.createElement('li');
-                li.textContent = `${item.name} - $${item.price.toFixed(2)}`;
-                cartItems.appendChild(li);
-                total += item.price;
-            });
-
-            totalPrice.textContent = total.toFixed(2);
-        }
-
         function purchase() {
             if (cart.length === 0) {
                 alert('Your cart is empty!');
@@ -252,23 +223,46 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
             document.querySelector('.cart').style.display = 'none';
             document.querySelector('#product-details').style.display = 'none';
             document.querySelector('.thank-you').style.display = 'block';
-           window.dataLayer.push({
-    event: 'purchase', // GA4 event name
-    ecommerce: {
-        transaction_id: `TXN-${Date.now()}`, // Generate a unique transaction ID
-        value: cart.reduce((total, item) => total + item.price, 0).toFixed(2),
-        currency: 'USD', // Replace with your currency
-        items: cart.map(item => ({
-            item_id: item.id,
-            item_name: item.name,
-            price: item.price,
-            quantity: 1
-        }))
-    }
-});
 
-console.log('Purchase event pushed to the dataLayer:', cart);
+            // Push purchase event
+            window.dataLayer.push({
+                event: 'purchase',
+                ecommerce: {
+                    transaction_id: `TXN-${Date.now()}`,
+                    value: cart.reduce((total, item) => total + item.price, 0),
+                    items: cart.map(item => ({
+                        item_id: item.id,
+                        item_name: item.name,
+                        price: item.price,
+                        quantity: 1
+                    }))
+                }
+            });
 
+            cart.length = 0; // Clear the cart
+            updateCart();
+        }
+
+        function refund() {
+            if (cart.length === 0) {
+                alert('No items to refund!');
+                return;
+            }
+
+            // Push refund event
+            window.dataLayer.push({
+                event: 'refund',
+                ecommerce: {
+                    items: cart.map(item => ({
+                        item_id: item.id,
+                        item_name: item.name,
+                        price: item.price,
+                        quantity: 1
+                    }))
+                }
+            });
+
+            alert('All items have been refunded.');
             cart.length = 0; // Clear the cart
             updateCart();
         }
