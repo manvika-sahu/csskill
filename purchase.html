@@ -151,6 +151,31 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     console.log('View Item event pushed to dataLayer:', { id, name, price }); // Debugging
 }
 
+
+    // New selectProduct function to track product selections
+    function selectProduct(id, name, price) {
+        currentProduct = { id, name, price };
+
+        // Change the URL when the product is selected (add product_id and action=select to the URL)
+        history.pushState(null, null, `?product_id=${id}&action=select`);
+
+        // Push select_item event to dataLayer
+        window.dataLayer.push({
+            event: 'select_item',
+            ecommerce: {
+                items: [
+                    {
+                        item_id: id,
+                        item_name: name,
+                        price: price,
+                        quantity: 1
+                    }
+                ]
+            }
+        });
+
+        console.log('Select Item event pushed to dataLayer:', { id, name, price }); // Debugging
+    }
         function backToProducts() {
             document.getElementById('products').style.display = 'block';
             document.getElementById('product-details').style.display = 'none';
