@@ -263,17 +263,22 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
             }
 
             // Push refund event
-            window.dataLayer.push({
-                event: 'refund',
-                ecommerce: {
-                    items: cart.map(item => ({
-                        item_id: item.id,
-                        item_name: item.name,
-                        price: item.price,
-                        quantity: 1
-                    }))
-                }
-            });
+          window.dataLayer.push({
+    event: 'refund',
+    ecommerce: {
+        currency: 'USD',  // Currency code, you can change this as needed
+        value: price,     // Total value of the refund
+        items: [
+            {
+                item_id: item.id,      // Item ID
+                item_name: item.name,  // Item name
+                price: item.price,     // Item price
+                quantity: 1            // Quantity (set to 1 in this case)
+            }
+        ]
+    }
+});
+
 
             alert('All items have been refunded.');
             cart.length = 0; // Clear the cart
