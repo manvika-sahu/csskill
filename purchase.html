@@ -94,6 +94,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         <p><strong>Total:</strong> $<span id="total-price">0.00</span></p>
         <button onclick="purchase()">Purchase</button>
         <button onclick="refund()">Refund</button>
+         <button onclick="addShippingInfo()">Add Shipping Info</button>
     </div>
 
     <div class="thank-you">
@@ -227,7 +228,45 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                 }
             });
         }
+       function addShippingInfo() {
+            // Clear previous ecommerce object
+            dataLayer.push({ ecommerce: null });
 
+            // Push add_shipping_info event
+            dataLayer.push({
+                event: "add_shipping_info",
+                ecommerce: {
+                    currency: "USD",
+                    value: 30.03,
+                    coupon: "SUMMER_FUN",
+                    shipping_tier: "Ground",
+                    items: [
+                        {
+                            item_id: "SKU_12345",
+                            item_name: "Stan and Friends Tee",
+                            affiliation: "Google Merchandise Store",
+                            coupon: "SUMMER_FUN",
+                            discount: 2.22,
+                            index: 0,
+                            item_brand: "Google",
+                            item_category: "Apparel",
+                            item_category2: "Adult",
+                            item_category3: "Shirts",
+                            item_category4: "Crew",
+                            item_category5: "Short sleeve",
+                            item_list_id: "related_products",
+                            item_list_name: "Related Products",
+                            item_variant: "green",
+                            location_id: "ChIJIQBpAG2ahYAR_6128GcTUEo",
+                            price: 10.01,
+                            quantity: 3
+                        }
+                    ]
+                }
+            });
+
+            console.log("Add Shipping Info event pushed to the dataLayer");
+        }
         function purchase() {
             if (cart.length === 0) {
                 alert('Your cart is empty!');
