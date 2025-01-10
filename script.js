@@ -37,7 +37,7 @@ document.addEventListener('DOMContentLoaded', function() {
         promoBanner.addEventListener('click', function() {
             // Push dataLayer to indicate the view_promotion event has occurred
             window.dataLayer.push({
-                event: "view_promotion",
+                event: "select_promotion",
                 ecommerce: {
                     creative_name: "Summer Banner",
                     creative_slot: "featured_app_1",
