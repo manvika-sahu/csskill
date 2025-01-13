@@ -106,3 +106,75 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 });
 
+// Login Authentication Function
+function authenticate(event) {
+    event.preventDefault(); // Prevent the form from submitting
+
+    var authorised;
+    // Get input values
+    var username = document.getElementById("username").value;
+    var password = document.getElementById("password").value;
+
+    // Check to see if the password and username match
+    if (username == "abcd" && password == "pass12345") {
+        authorised = true;
+        alert("Login successful");
+        window.location.href = "login-successful.html"; // Redirect to login-successful.html
+        dataLayer.push({
+            'event': 'login_success',
+            'user_id': 'pas123'
+        });
+    }
+    // Additional conditions for other usernames/passwords
+    else if (username == "shivayush" && password == "shiv123") {
+        authorised = true;
+        alert("Login successful");
+        window.location.href = "login-successful.html"; // Redirect to login-successful.html
+        dataLayer.push({
+            'event': 'login_success',
+            'user_id': 'shiv123'
+        });
+    }
+    else if (username == "paridhi" && password == "pari") {
+        authorised = true;
+        alert("Login successful");
+        window.location.href = "login-successful.html"; // Redirect to login-successful.html
+        dataLayer.push({
+            'event': 'login_success',
+            'user_id': 'pari123'
+        });
+    }
+    else if (username == "yasir" && password == "yas123") {
+        authorised = true;
+        alert("Login successful");
+        window.location.href = "login-successful.html"; // Redirect to login-successful.html
+        dataLayer.push({
+            'event': 'login_success',
+            'user_id': 'yas123'
+        });
+    }
+    else if (username == "ishika" && password == "ishi123") {
+        authorised = true;
+        alert("Login successful");
+        window.location.href = "login-successful.html"; // Redirect to login-successful.html
+        dataLayer.push({
+            'event': 'login_success',
+            'user_id': 'ishi123'
+        });
+    }
+    else {
+        authorised = false;
+        // If the username or password is incorrect
+        alert("Sorry, password is incorrect.");
+        window.location.href = "login-failed.html"; // Redirect to login-failed.html
+        dataLayer.push({
+            'event': 'login_failed'
+        });
+    }
+
+    // Return result
+    return authorised;
+}
+
+// Add event listener for form submission
+document.getElementById("login-form").addEventListener("submit", authenticate);
